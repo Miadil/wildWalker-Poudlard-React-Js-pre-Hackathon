@@ -1,20 +1,32 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-import characters from "../../assets/data/TabCharacters";
-import { useState } from "react";
+// import characters from "../../assets/data/TabCharacters";
 
 function CharacterDetails() {
 	const { pouletId } = useParams();
-	const [detailsCharact, setDetailsCharact] = useState(
-		characters.find((character) => character.id === parseInt(pouletId, 10)),
-	);
+	const [detailsCharact, setDetailsCharact] = useState(null);
+
+	useEffect(() => {
+		fetch(
+			`https://miadil.github.io/HarryPotterApi/api/json/id/${pouletId}.json`,
+		)
+			.then((res) => {
+				return res.json();
+			})
+			.then((data) => setDetailsCharact(data[0]));
+	}, [pouletId]);
+
+	if (!detailsCharact) {
+		return <p>Chargement...</p>;
+	}
 
 	return (
 		<div>
-			<img src={detailsCharact.imgSrc} alt={detailsCharact.name} />
+			<img src={detailsCharact.image} alt={detailsCharact.name} />
 			<p>{detailsCharact.name}</p>
 			<p>{detailsCharact.house}</p>
-			<p>{detailsCharact.role}</p>
+			<p>{detailsCharact.actor}</p>
 		</div>
 	);
 }

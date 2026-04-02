@@ -9,7 +9,7 @@ function App() {
 		<>
 			<Navbar />
 			<main>
-				<Outlet />
+				<Outlet /> {/* <Characters /> */}
 			</main>
 		</>
 	);
